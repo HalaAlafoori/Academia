@@ -23,6 +23,7 @@ frappe.ui.form.on('Transaction', {
     // }
 
     outgoing: function(frm) {
+       // frappe.msgprint("fff")
         if(frm.doc.outgoing){
             frm.doc.incoming = false;
         }
@@ -235,6 +236,8 @@ frappe.ui.form.on('Transaction', {
         });
     },
     to_department: function(frm) {
+         // Show a message when the Type field is changed
+        // frappe.msgprint("Type field changed!");
         if (frm.doc.outgoing) {
             frm.set_value('sub_department_link', frm.doc.to_party);
 
@@ -279,8 +282,60 @@ frappe.ui.form.on('Transaction', {
                 };
             });
         }
-    }
+    },
+    category: function(frm) {
+        console.log("eeee")
+        // Clear previously added attach image fields
+        frm.clear_table("attachments");
+    
+        // Fetch Transaction Type Requirements based on the selected Transaction Type
+        if (frm.doc.category) {
+          frappe.call({
+            method: "academia.transaction_management.script.get_transaction_category_requirement",
+            args: {
+              transaction_category: frm.doc.category
+            },
+            callback: function(response) {
+              // Add attach image fields for each Transaction Type Requirement
+              const requirements = response.message || [];
+              //console.log("REQUIRMTS"+requirements)
+              requirements.forEach(function(requirement) {
+                const fieldname =  requirement.name.replace(/ /g, "_").toLowerCase()+"_file";
+                //console.log("field name: "+fieldname)
+
+                frm.add_child("attachments", {
+                  attachment_name: fieldname,
+                  attachment_label: requirement.name,
+                  fieldtype: "Attach Image"
+                });
+              });
+    
+            // Hide 'add row' button
+            frm.get_field("attachments").grid.cannot_add_rows = true;
+             // Stop 'add below' & 'add above' options
+            frm.get_field("attachments").grid.only_sortable();
+            //make the lables uneditable
+            frm.fields_dict.attachments.grid.docfields[1].read_only = 1;
+            
+            // Refresh the form to display the newly added fields
+               frm.refresh_fields("attachments");
+              
+            //   // Save the form to reflect the changes
+            //   frm.save();
+            }
+          });
+        }
+    
+        // Show a message when the Type field is changed
+        //frappe.msgprint("Type field changed!");
+      },
+      
+    
 });
+
+
+
+
 // frappe.ui.form.on('Transaction', {
 //     from_department: function(frm) {
 //         if (frm.doc.outgoing) {

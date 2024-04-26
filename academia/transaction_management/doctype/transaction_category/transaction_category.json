@@ -1,13 +1,13 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:group_name",
+ "autoname": "field:category_name",
  "creation": "2024-02-08 08:21:35.888090",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "description_section",
-  "group_name",
+  "category_name",
   "text_editor_uzrj",
   "requirements_tab",
   "requirements"
@@ -29,22 +29,22 @@
    "options": "Transaction Category  Requirement"
   },
   {
-   "fieldname": "group_name",
+   "fieldname": "requirements_tab",
+   "fieldtype": "Tab Break",
+   "label": "Requirements "
+  },
+  {
+   "fieldname": "category_name",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Category Name",
    "reqd": 1,
    "unique": 1
-  },
-  {
-   "fieldname": "requirements_tab",
-   "fieldtype": "Tab Break",
-   "label": "Requirements "
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-04-25 22:03:27.245190",
+ "modified": "2024-04-26 01:18:16.892429",
  "modified_by": "Administrator",
  "module": "Transaction Management",
  "name": "Transaction Category",

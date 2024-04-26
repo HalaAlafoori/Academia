@@ -29,7 +29,9 @@
   "reference_number",
   "receivesent_date",
   "client",
-  "company"
+  "company",
+  "section_break_niff",
+  "attachments"
  ],
  "fields": [
   {
@@ -167,11 +169,21 @@
    "fieldtype": "Dynamic Link",
    "label": "Sub Department",
    "options": "sub_department_link"
+  },
+  {
+   "fieldname": "section_break_niff",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "attachments",
+   "fieldtype": "Table",
+   "label": "Attachments",
+   "options": "Transaction Attachments"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-04-25 22:48:51.604118",
+ "modified": "2024-04-26 20:33:48.305637",
  "modified_by": "Administrator",
  "module": "Transaction Management",
  "name": "Transaction",

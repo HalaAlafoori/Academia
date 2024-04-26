@@ -17,6 +17,18 @@ class Transaction(Document):
             self.to_party = "Department"
             department = frappe.get_doc("Department", "Accounts")
             if department:
-                self.to_department = department.name	
+                self.to_department = department.name
+    
+        frappe.msgprint('here')
+        for row in self.attachments:
+            if not row.attachment_name:
+                row.attachment_name = row.attachment_label.replace(" ", "_").lower() + "_file"
+		   
+			    	
 
+        
+
+            
+		
+		
 
