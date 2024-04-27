@@ -1,12 +1,14 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:TRA-{#####}",
  "creation": "2024-04-25 22:30:46.203673",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "document_details_section",
   "document_id",
+  "associated_transaction",
   "column_break_veth",
   "category",
   "transaction_information_section",
@@ -29,9 +31,7 @@
   "reference_number",
   "receivesent_date",
   "client",
-  "company",
-  "section_break_niff",
-  "attachments"
+  "company"
  ],
  "fields": [
   {
@@ -42,6 +42,7 @@
   {
    "fieldname": "document_id",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Document ID"
   },
   {
@@ -98,7 +99,8 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "\nStatus 1\nStatus 2\nStatus 3"
+   "options": "\nStatus 1\nStatus 2\nStatus 3",
+   "read_only": 1
   },
   {
    "fieldname": "prority",
@@ -169,24 +171,15 @@
    "fieldtype": "Dynamic Link",
    "label": "Sub Department",
    "options": "sub_department_link"
-  },
-  {
-   "fieldname": "section_break_niff",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "attachments",
-   "fieldtype": "Table",
-   "label": "Attachments",
-   "options": "Transaction Attachments"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-04-26 20:33:48.305637",
+ "modified": "2024-04-25 22:48:51.604118",
  "modified_by": "Administrator",
  "module": "Transaction Management",
  "name": "Transaction",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
