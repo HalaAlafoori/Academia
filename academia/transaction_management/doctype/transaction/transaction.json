@@ -23,6 +23,8 @@
   "sub_department",
   "status",
   "prority",
+  "associated_transactions_section",
+  "associated_transactions",
   "additional_details_section",
   "title",
   "description",
@@ -32,10 +34,9 @@
   "receivesent_date",
   "client",
   "company",
+  "logo",
   "section_break_niff",
-  "attachments",
-  "associated_transactions_section",
-  "associated_transactions"
+  "attachments"
  ],
  "fields": [
   {
@@ -199,11 +200,18 @@
   {
    "fieldname": "associated_transactions",
    "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "logo",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Logo Image",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-04-29 20:19:02.359116",
+ "modified": "2024-05-22 15:22:23.535378",
  "modified_by": "Administrator",
  "module": "Transaction Management",
  "name": "Transaction",
