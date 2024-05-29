@@ -7,8 +7,8 @@
  "engine": "InnoDB",
  "field_order": [
   "requirements_tab",
-  "category_parent",
   "category_name",
+  "category_parent",
   "requirements",
   "column_break_nqbz",
   "text_editor_uzrj"
@@ -52,7 +52,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-05-29 19:16:34.846721",
+ "modified": "2024-05-29 16:20:01.496847",
  "modified_by": "Administrator",
  "module": "Transaction Management",
  "name": "Transaction Category",
