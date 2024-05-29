@@ -23,7 +23,7 @@
    "fieldname": "requirements",
    "fieldtype": "Table",
    "label": "Requirements",
-   "options": "Transaction Category  Requirement"
+   "options": "Transaction Category Requirement"
   },
   {
    "fieldname": "requirements_tab",
@@ -51,7 +51,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-05-28 22:34:45.814847",
+ "modified": "2024-05-29 17:35:43.881911",
  "modified_by": "Administrator",
  "module": "Transaction Management",
  "name": "Transaction Category",
