@@ -10,15 +10,15 @@ class Transaction(Document):
         self.created_by = created_by.name
     
        
-# @frappe.whitelist()
-# def get_transaction_actions(transaction):
-#     transaction_actions =  frappe.get_all(
-#             'Transaction Action',
-#             filters={'main_transaction': transaction},
-#             fields=['*'],
-#             order_by='creation'
-#         )
-#     return transaction_actions
+@frappe.whitelist()
+def get_transaction_actions(transaction):
+    transaction_actions =  frappe.get_all(
+            'Transaction Action',
+            filters={'main_transaction': transaction},
+            fields=['*'],
+            order_by='creation'
+        )
+    return transaction_actions
   
 @frappe.whitelist()
 def get_transaction_category_requirement(transaction_category):
