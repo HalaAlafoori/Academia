@@ -33,6 +33,20 @@ class Transaction(Document):
     def before_save(self):
         created_by = frappe.get_doc('User', frappe.session.user)
         self.created_by = created_by.name
+# <<<<<<< HEAD
+# =======
+    
+       
+# @frappe.whitelist()
+# def get_transaction_actions(transaction):
+#     transaction_actions =  frappe.get_all(
+#             'Transaction Action',
+#             filters={'main_transaction': transaction},
+#             fields=['*'],
+#             order_by='creation'
+#         )
+#     return transaction_actions
+# >>>>>>> 4e2b39f57e4a269e67950f0eba58d40ca7b51af9
   
 @frappe.whitelist()
 def get_transaction_category_requirement(transaction_category):
