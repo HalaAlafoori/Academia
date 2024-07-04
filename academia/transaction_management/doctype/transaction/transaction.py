@@ -53,7 +53,16 @@ class Transaction(Document):
         type: DF.Literal["Outgoing", "Incoming"]
     # end: auto-generated types
     def on_submit(self):
-
+        if self.start_with:
+            employee = frappe.get_doc("Employee", self.start_with)
+            frappe.share.add(
+                doctype = "Transaction",
+                name = self.name,
+                user = employee.user_id,
+                read = 1,
+                write = 0,
+                share = 0
+            )
         # make a read permission for applicants
         for row in self.applicants_table:
             applicant = frappe.get_doc(row.applicant_type, row.applicant)
@@ -67,7 +76,7 @@ class Transaction(Document):
 				user = appicant_user_id,
 				read = 1,
 			)  
-                    # check if the through_route is disabled
+        # check if the through_route is disabled
         if self.through_route == 1:
             share_permission_through_route(self, self.start_with)
 
@@ -171,15 +180,6 @@ def get_user_permissions(docname, user):
     else:
         return None
 
-# def get_employee_by_user_id(user_id):
-#     try:
-#         # Check if an Employee document exists with the given user_id
-#         employee = frappe.get_doc("Employee", {"user_id": user_id})
-#         return employee
-#     except frappe.DoesNotExistError:
-#         # If no Employee document is found, return None
-#         return None
-
 @frappe.whitelist()
 def get_employee_by_user_id(user_id):
     employee = frappe.get_all("Employee",
@@ -211,18 +211,15 @@ def create_new_transaction_action(user_id, transaction_name, type, details):
         new_doc.submit()
         new_doc.save()
 
-        
-        if type == "Approved" or type == "Rejected":
-            if check_all_recipients_action(transaction_name):
-                transaction_doc = frappe.get_doc("Transaction", transaction_name)
-                transaction_doc.status = "Completed"
-                transaction_doc.save()
+        if check_all_recipients_action(transaction_name, user_id):
+            transaction_doc = frappe.get_doc("Transaction", transaction_name)
+            transaction_doc.status = "Completed"
+            transaction_doc.save()
         
         permissions = {
                             "read": 1,
                             "write": 0,
                             "share": 0,
-                            "submit":0,
                             "submit":0
                         }
         permissions_str = json.dumps(permissions)
@@ -232,39 +229,21 @@ def create_new_transaction_action(user_id, transaction_name, type, details):
     else:
         return "No employee found for the given user ID."
 
+@frappe.whitelist()
+def check_all_recipients_action(docname, user_id):
+    shares = frappe.get_all("DocShare", filters={
+                "share_doctype": "Transaction",
+                "share_name": docname,
+            }, fields=["share", "user"])
 
-def check_all_recipients_action(transaction_name, action_name=''):
-    parent = action_name if action_name != '' else transaction_name
     
-    recipients = frappe.get_all("Transaction Recipients",
-                                filters={"parent": parent},
-                                fields=["recipient_email"],
-                                order_by="creation"
-                                )
-
-    actions = frappe.get_all("Transaction Action",
-                             filters={
-                                 "transaction": transaction_name,
-                                 "docstatus": 1,
-                                 },
-                             fields=["name", "type", "owner"],
-                             order_by="creation"
-                             )
-    for recipient in recipients:
-        recipient_email = recipient.recipient_email
-        action_type = None
-
-        for action in actions:
-            if action.owner == recipient_email:
-                action_type = action.type
-                if action_type == "Redirected":
-                    if not check_all_recipients_action(transaction_name, action.name):
-                        return False
-                break
-        
-        if action_type == None:
+    for share in shares:
+        if share["share"] == 1 and share["user"] != user_id:
             return False
+    
     return True
+
+
 
                     
 

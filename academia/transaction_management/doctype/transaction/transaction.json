@@ -327,11 +327,10 @@
    "fieldtype": "Column Break"
   }
  ],
- "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-07-01 21:03:34.125256",
+ "modified": "2024-07-04 16:46:29.030131",
  "modified_by": "Administrator",
  "module": "Transaction Management",
  "name": "Transaction",

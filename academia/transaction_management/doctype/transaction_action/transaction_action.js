@@ -56,7 +56,7 @@ frappe.ui.form.on("Transaction Action", {
           // Add the current user to the existing recipient IDs
           existingRecipientIds.push(frappe.session.user);
     
-          let d = new frappe.ui.form.MultiSelectDialog({
+          new frappe.ui.form.MultiSelectDialog({
             doctype: "Employee",
             target: frm,
             setters: setters,
@@ -116,9 +116,6 @@ frappe.ui.form.on("Transaction Action", {
               });
             }
           });
-    
-          // Show the dialog
-          d.show();
         }
       });
     },

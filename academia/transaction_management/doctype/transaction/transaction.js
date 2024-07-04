@@ -75,27 +75,37 @@ frappe.ui.form.on('Transaction', {
 
         if(frm.doc.docstatus === 1)       
         {
-            if(!frm.doc.__islocal )
-            {
-                frappe.call({
-                  method: "academia.transaction_management.doctype.transaction.transaction.get_user_permissions",
-                  args: {
-                    docname: frm.doc.name,
-                    user: frappe.session.user
-                  },
-                  callback: function(response) {
-                    var docshare = response.message;
-                    // console.log(docshare);
-                    if(docshare.share === 1)
-                    {
-                      add_approve_action(frm);
-                      add_redirect_action(frm);
-                      add_reject_action(frm);
-                      add_council_action(frm);
-                    }
-                  }
-                });
+          frappe.call({
+            method: "academia.transaction_management.doctype.transaction.transaction.check_all_recipients_action",
+            args: {
+              docname: frm.doc.name,
+              user_id: frappe.session.user
+            },
+            callback: function(response) {
+              console.log(response.message);
+            }
+          });
+
+          if(!frm.doc.__islocal )
+          {
+            frappe.call({
+              method: "academia.transaction_management.doctype.transaction.transaction.get_user_permissions",
+              args: {
+                docname: frm.doc.name,
+                user: frappe.session.user
+              },
+              callback: function(response) {
+                var docshare = response.message;
+                if(docshare.share === 1)
+                {
+                  add_approve_action(frm);
+                  add_redirect_action(frm);
+                  add_reject_action(frm);
+                  add_council_action(frm);
+                }
               }
+            });
+          }
          
         }
 
@@ -219,7 +229,7 @@ frappe.ui.form.on('Transaction', {
       // Add the current user to the existing recipient IDs
       existingRecipientIds.push(frappe.session.user);
   
-      let d=new frappe.ui.form.MultiSelectDialog({
+      new frappe.ui.form.MultiSelectDialog({
         doctype: "Employee",
         target: frm,
         setters: setters,
@@ -379,21 +389,24 @@ frappe.ui.form.on('Transaction', {
         frappe.throw(message);
     }},
     start_with: function(frm) {
-      frappe.call({
-        method: "frappe.client.get",
-        args: {
-        doctype: "Employee",
-        filters: { name: frm.doc.start_with },
-        fields: ["designation", "department", "company"]
-      },
-      callback: (response) => {
-        employee = response.message
-        console.log(employee);
-        frm.set_value('start_with_company', employee.company);
-        frm.set_value('start_with_department', employee.department);
-        frm.set_value('start_with_designation', employee.designation);
-      }
-    });
+      if(frm.doc.start_with)
+        {
+          frappe.call({
+            method: "frappe.client.get",
+            args: {
+            doctype: "Employee",
+            filters: { name: frm.doc.start_with },
+            fields: ["designation", "department", "company"]
+          },
+          callback: (response) => {
+            employee = response.message
+            // console.log(employee);
+            frm.set_value('start_with_company', employee.company);
+            frm.set_value('start_with_department', employee.department);
+            frm.set_value('start_with_designation', employee.designation);
+          }
+        });
+        }
     }
 });
 
@@ -408,32 +421,31 @@ function add_redirect_action(frm) {
             'from_designation': frm.doc.designation,
 
         });
-         // back to Transaction after save the transaction action
          frappe.ui.form.on("Transaction Action", {
-            on_submit: function(frm) {
-                frappe.set_route('Form', 'Transaction', frm.doc.transaction);
-                frappe.call({
-                  method: "academia.transaction_management.doctype.transaction.transaction.update_share_permissions",
-                  args: {
-                    docname: frm.doc.name,
-                    user: frappe.session.user,
-                    permissions: {
-                      "read": 1,
-                      "write": 0,
-                      "share": 0,
-                      "submit":0,
-                      "submit":0
+            on_submit: function() {
+              frappe.call({
+                method: "academia.transaction_management.doctype.transaction.transaction.update_share_permissions",
+                args: {
+                  docname: frm.doc.name,
+                  user: frappe.session.user,
+                  permissions: {
+                    "read": 1,
+                    "write": 0,
+                    "share": 0,
+                    "submit":0
+                }
+                },
+                callback: function(response) {
+                  if(response.message)
+                  {
+                    // back to Transaction after save the transaction action
+                    frappe.set_route('Form', 'Transaction', frm.doc.name);
+                    location.reload();
                   }
-                  },
-                  callback: function(response) {
-                    if(response.message)
-                    {
-                      location.reload();
-                    }
-                  }
-                });
+                }
+              });
             },
-        })
+        });
     });
 }
 
