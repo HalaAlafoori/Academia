@@ -1,0 +1,113 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-07-14 23:49:55.184287",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "department",
+  "designation",
+  "document_type",
+  "document_name",
+  "read_ch",
+  "write_ch",
+  "share_ch",
+  "submit_ch",
+  "everyone_ch",
+  "notify_by_email_ch"
+ ],
+ "fields": [
+  {
+   "fieldname": "document_type",
+   "fieldtype": "Link",
+   "label": "Document Type",
+   "options": "DocType"
+  },
+  {
+   "fieldname": "document_name",
+   "fieldtype": "Dynamic Link",
+   "label": "Document Name",
+   "options": "document_type"
+  },
+  {
+   "default": "0",
+   "fieldname": "submit_ch",
+   "fieldtype": "Check",
+   "label": "Submit"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "search_index": 1
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department"
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation"
+  },
+  {
+   "default": "0",
+   "fieldname": "read_ch",
+   "fieldtype": "Check",
+   "label": "Read"
+  },
+  {
+   "default": "0",
+   "fieldname": "write_ch",
+   "fieldtype": "Check",
+   "label": "Write"
+  },
+  {
+   "default": "0",
+   "fieldname": "share_ch",
+   "fieldtype": "Check",
+   "label": "Share"
+  },
+  {
+   "default": "0",
+   "fieldname": "everyone_ch",
+   "fieldtype": "Check",
+   "label": "Everyone"
+  },
+  {
+   "default": "0",
+   "fieldname": "notify_by_email_ch",
+   "fieldtype": "Check",
+   "label": "Notify By Email"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-07-15 00:23:14.207106",
+ "modified_by": "Administrator",
+ "module": "Transaction Management",
+ "name": "Transaction Temp Share",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
